@@ -1,0 +1,9 @@
+PUT http://localhost:9200/_bulk?pretty
+Content-Type: application/json
+
+< ./json_files/movies.json
+###
+
+GET http://localhost:9200/movies/_search?pretty
+
+###

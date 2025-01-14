@@ -1,0 +1,63 @@
+PUT http://localhost:9200/series
+Content-Type: application/json
+
+{
+    "mappings": {
+        "properties": {
+            "film_to_franchise": {
+                "type": "join",
+                "relations": { "franchise": "film" }
+            }
+        }
+    }
+}
+###
+
+DELETE http://localhost:9200/series
+###
+
+POST http://localhost:9200/series/_bulk?pretty
+Content-Type: application/json
+
+< ./json_files/series.json
+###
+
+GET http://localhost:9200/series/_search?pretty
+Content-Type: application/json
+###
+
+
+GET http://localhost:9200/series/_search?pretty
+Content-Type: application/json
+
+{
+    "query": {
+        "has_parent": {
+            "parent_type": "franchise",
+            "query": {
+                "match": {
+                    "title": "Star Wars"
+                }
+            }
+        }
+    }
+}
+###
+
+GET http://localhost:9200/series/_search?pretty
+Content-Type: application/json
+
+{
+    "query": {
+        "has_child": {
+            "type": "film",
+            "query": {
+                "match": {
+                    "title": "The Phantom Menace"
+                }
+            }
+        }
+    }
+}
+###
+

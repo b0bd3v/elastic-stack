@@ -1,0 +1,133 @@
+PUT http://localhost:9200/microservice-logs
+Content-Type: application/json
+
+{
+    "mappings": {
+        "properties": {
+            "timestamp": { "type": "date"  },
+            "service": { "type": "keyword" },
+            "host_ip": { "type": "ip" },
+            "port": { "type": "integer" },
+            "message": { "type": "text" }
+        }
+    }
+}
+###
+
+POST http://localhost:9200/microservice-logs/_doc?pretty
+Content-Type: application/json
+
+{
+    "timestamp": "2020-04-11T12:34:56.789Z",
+    "service": "XYZ",
+    "host_ip": "10.0.2.15",
+    "port": "15000",
+    "message": "Hello!"
+}
+###
+
+POST http://localhost:9200/microservice-logs/_doc?pretty
+Content-Type: application/json
+
+{
+    "timestamp": "2020-04-11T12:34:56.789Z",
+    "service": "XYZ",
+    "host_ip": "10.0.2.15",
+    "port": "NONE",
+    "message": "I am not well!"
+}
+###
+
+POST http://localhost:9200/microservice-logs/_close
+###
+
+PUT http://localhost:9200/microservice-logs/_settings
+Content-Type: application/json
+
+{
+    "index.mapping.ignore_malformed": true
+}
+###
+
+POST http://localhost:9200/microservice-logs/_open
+###
+
+GET http://localhost:9200/microservice-logs/_search?pretty
+###
+
+POST http://localhost:9200/microservice-logs/_doc?pretty
+Content-Type: application/json
+
+{
+    "timestamp": "2020-04-11T12:34:56.789Z",
+    "service": "ABC",
+    "host_ip": "10.0.2.15",
+    "port": 12345,
+    "message": {
+        "data": {
+            "received": "here"
+        }
+    }
+}
+###
+
+POST http://localhost:9200/microservice-logs/_doc?pretty
+Content-Type: application/json
+
+{
+    "timestamp": "2020-04-11T12:34:56.789Z",
+    "service": "ABC",
+    "host_ip": "10.0.2.15",
+    "port": 12345,
+    "message": "Received...",
+    "payload": {
+        "data": {
+            "received": "here"
+        }
+    }
+}
+###
+
+GET http://localhost:9200/microservice-logs/_mapping?pretty
+###
+
+POST http://localhost:9200/microservice-logs/_doc?pretty
+Content-Type: application/json
+
+{
+    "timestamp": "2020-04-11T12:34:56.789Z",
+    "service": "ABC",
+    "host_ip": "10.0.2.15",
+    "port": 12345,
+    "message": "Received...",
+    "payload": {
+        "data": {
+            "received": {
+                "even": "more"
+            }
+        }
+    }
+}
+###
+
+PUT http://localhost:9200/big-objects
+###
+
+POST http://localhost:9200/big-objects/_doc?pretty
+Content-Type: application/json
+
+< ./json_files/sthousandone_fields_json
+###
+
+GET http://localhost:9200/big-objects/_search?pretty
+###
+
+DELETE http://localhost:9200/big-objects
+###
+
+PUT http://localhost:9200/big-objects/_settings
+Content-Type: application/json
+
+{
+    "index.mapping.total_fields.limit": 10001
+}
