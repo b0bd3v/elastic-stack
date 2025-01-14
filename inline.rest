@@ -1,1 +1,10 @@
-GET http://localhost:9200/movies/
+GET http://localhost:9200/movies/_search?q=title:star&pretty
+###
+
+GET http://localhost:9200/movies/_search?q=+year>2010+title:trek&pretty
+###
+
+
+GET http://localhost:9200/movies/_search?q=%2Byear%3A%3E2010+%2btitle%3Atrek&pretty
+###
+
